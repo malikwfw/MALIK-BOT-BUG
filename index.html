@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>DEATH - The BUG BOT </title>
+  <style>
+    * {margin:0; padding:0; box-sizing:border-box;}
+    body {
+      font-family: Arial, sans-serif;
+      color: white;
+      background-color: black;
+      overflow: hidden;
+    }
+    video {
+      position: fixed;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      z-index: -2;
+    }
+    #soundOverlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.95);
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      z-index: 999;
+      transition: opacity 0.8s ease;
+    }
+    #soundOverlay.hidden {
+      opacity: 0;
+      pointer-events: none;
+    }
+    #soundOverlay h2 {
+      font-size: 2rem;
+      color: #dc2626;
+      text-transform: uppercase;
+      margin-bottom: 1rem;
+      text-shadow: 0 0 20px red;
+    }
+    #enableSoundBtn {
+      background: #b91c1c;
+      border: 3px solid #ef4444;
+      color: white;
+      font-size: 1.2rem;
+      padding: 1rem 2.5rem;
+      border-radius: 50px;
+      font-weight: bold;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      box-shadow: 0 0 20px #7f1d1d;
+    }
+    #enableSoundBtn:hover {
+      background: #ef4444;
+      transform: scale(1.05);
+      box-shadow: 0 0 30px #ef4444;
+    }
+    .overlay {
+      background: rgba(0,0,0,0.7);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 2rem;
+      opacity: 0;
+      transition: opacity 1s ease;
+    }
+    .overlay.visible { opacity: 1; }
+    h1 {
+      font-size: 4rem;
+      color: #dc2626;
+      text-transform: uppercase;
+      font-weight: 900;
+      margin-bottom: 0.8rem;
+      text-shadow: 0 0 25px #ef4444;
+    }
+    p { font-size: 1.3rem; margin-bottom: 1.5rem; }
+    .card {
+      background: #0b0b0b;
+      border: 2px solid #b91c1c;
+      padding: 1.6rem;
+      border-radius: 12px;
+      box-shadow: 0 0 18px #7f1d1d;
+      width: 100%;
+      max-width: 420px;
+    }
+    label {
+      display: block;
+      color: #ef4444;
+      font-weight: 700;
+      margin-bottom: 0.4rem;
+    }
+    input {
+      width: 100%;
+      padding: 10px;
+      background: #171717;
+      border: 1px solid #5c1212;
+      border-radius: 6px;
+      color: white;
+      margin-bottom: 1rem;
+    }
+    .btn {
+      background: #7f1d1d;
+      color: white;
+      border: 2px solid #ef4444;
+      padding: 12px;
+      font-size: 1.1rem;
+      border-radius: 8px;
+      cursor: pointer;
+      width: 100%;
+    }
+    .btn:hover { background: #b91c1c; }
+    .feedback { margin-top: 10px; min-height: 22px; }
+    .success { color: #9ef0b7; }
+    .error { color: #ffb4b4; }
+    @keyframes shake {
+      10%,90%{transform:translateX(-1px);}
+      20%,80%{transform:translateX(2px);}
+      30%,50%,70%{transform:translateX(-4px);}
+      40%,60%{transform:translateX(4px);}
+    }
+    .shake { animation: shake 400ms; }
+    @media(max-width:600px){
+      h1{font-size:2.6rem;}
+      #soundOverlay h2{font-size:1.4rem;}
+      .card{width:90%;padding:1.2rem;}
+      input{font-size:1rem;}
+    }
+  </style>
+</head>
+<body>
+  <video id="bgVideo"
+    src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/SSYouTube.online_Scariest%20Dreamworks%20Villain%F0%9F%98%AD%F0%9F%99%8F%20_%20Death%20Edit%20%28Puss%20In%20Boots%20The%20Last%20Wish%29_480p-PffkAOnwBQlnnvElJKgjUI7eueSbM0.mp4"
+    autoplay muted loop playsinline></video>
+
+  <div id="soundOverlay">
+    <h2>Enable Sound</h2>
+    <button id="enableSoundBtn">Click to Continue</button>
+  </div>
+
+  <div class="overlay" id="mainContent">
+    <h1>DETH</h1>
+    <p>DEATHxRISHI BUG BOT </p>
+
+    <div class="card" id="authCard">
+      <form id="authForm">
+        <label for="username">Username</label>
+        <input id="username" type="text" placeholder="Enter your name..." required />
+        <label for="password">Password</label>
+        <input id="password" type="password" placeholder="Whisper the secret..." required />
+        <button type="submit" class="btn">ACCESS THE BOT LINK</button>
+        <div class="feedback" id="feedback"></div>
+      </form>
+    </div>
+  </div>
+
+  <script>
+    const video = document.getElementById('bgVideo');
+    const overlay = document.getElementById('soundOverlay');
+    const btn = document.getElementById('enableSoundBtn');
+    const mainContent = document.getElementById('mainContent');
+    const feedback = document.getElementById('feedback');
+    const authForm = document.getElementById('authForm');
+    const authCard = document.getElementById('authCard');
+
+    const USER = 'DEATH';
+    const PASS = 'DEVELOPERDEATH';
+    const REDIRECT_URL = 'https://www.mediafire.com'; // put your URL here later
+
+    btn.addEventListener('click', async () => {
+      try {
+        // Browser requires direct user gesture for sound
+        video.muted = false;
+        await video.play();
+      } catch (err) {
+        console.warn('Autoplay with sound blocked, retrying muted...');
+        video.muted = true;
+        video.play();
+      }
+      overlay.classList.add('hidden');
+      mainContent.classList.add('visible');
+    });
+
+    authForm.addEventListener('submit', e => {
+      e.preventDefault();
+      const u = document.getElementById('username').value.trim();
+      const p = document.getElementById('password').value.trim();
+      if (u === USER && p === PASS) {
+        feedback.textContent = 'ACCESS GRANTED';
+        feedback.className = 'feedback success';
+        setTimeout(() => {
+          if (REDIRECT_URL && REDIRECT_URL !== 'REDIRECT_URL') {
+            window.location.href = REDIRECT_URL;
+          } else {
+            alert('Redirect URL not set — add it in REDIRECT_URL.');
+          }
+        }, 800);
+      } else {
+        feedback.textContent = 'Invalid username or password';
+        feedback.className = 'feedback error';
+        authCard.classList.add('shake');
+        setTimeout(()=>authCard.classList.remove('shake'),400);
+      }
+    });
+  </script>
+</body>
+</html>
