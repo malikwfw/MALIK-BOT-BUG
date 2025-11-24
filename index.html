@@ -169,7 +169,7 @@
     const authForm = document.getElementById('authForm');
     const authCard = document.getElementById('authCard');
 
-    const USER = 'MALIK';
+    const USER = 'malik';
     const PASS = '9832';
     const REDIRECT_URL = 'https://deathxguide.vercel.app'; // put your URL here later
 
@@ -192,7 +192,7 @@
       const u = document.getElementById('username').value.trim();
       const p = document.getElementById('password').value.trim();
       if (u === USER && p === PASS) {
-        feedback.textContent = 'ACCESS GRANTED';
+        feedback.textContent = '✅';
         feedback.className = 'feedback success';
         setTimeout(() => {
           if (REDIRECT_URL && REDIRECT_URL !== 'REDIRECT_URL') {
@@ -202,7 +202,7 @@
           }
         }, 800);
       } else {
-        feedback.textContent = 'Invalid username or password';
+        feedback.textContent = '❌';
         feedback.className = 'feedback error';
         authCard.classList.add('shake');
         setTimeout(()=>authCard.classList.remove('shake'),400);
